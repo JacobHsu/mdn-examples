@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Wat Demo: select</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-wat.css?v=220ae8b" rel="stylesheet" />
+  </head>
+  <body>
+    <section id="static">
+        <pre><code id="static-wat" data-height="taller">(module
+  (func (export "select_simple") (result i32)
+    ;; load two values onto the stack
+    i32.const 10
+    i32.const 20
+
+    ;; change to `1` (true) to get the first value (`10`)
+    i32.const 0
+    select
+  )
+  (func (export "select_externref") (param $value externref) (param $condition i32) (result externref)
+    ;; this is "select t", the explicitly typed variant
+    ref.null extern
+    local.get $value
+    local.get $condition
+    select (result externref)
+  )
+)
+</code></pre>
+        <pre><code id="static-js" data-height="taller">const url = '{%wasm-url%}';
+await WebAssembly.instantiateStreaming(fetch(url)).then((result) => {
+  const { select_simple, select_externref } = result.instance.exports;
+
+  console.log(select_simple());
+  // Expected output: 20
+
+  // If the second parameter is zero, returns the first parameter (which may be an arbitrary JS value)
+  const map = new Map();
+  console.log(select_externref(map, 0));
+  // Expected output: [object Map]
+  console.log(select_externref(map, -1));
+  // Expected output: null
+});
+</code></pre>
+    </section>
+
+    <header class="output-header border-rounded-top">
+      <h4 class="output-heading">Wat Demo: select</h4>
+    </header>
+
+    <section id="tab-container" class="tabs">
+      <div class="tab-list border-sides" id="tablist" role="tablist">
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="js-panel"
+          id="js"
+          tabindex="-1"
+        >
+          JavaScript
+        </button>
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="wat-panel"
+          id="wat"
+          autofocus
+        >
+          WAT
+        </button>
+      </div>
+
+      <section id="live" class="live hidden">
+        <section
+          class="editor hidden"
+          id="js-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="js"
+          aria-hidden="true"
+        >
+          <div id="js-editor"></div>
+        </section>
+        <section
+          class="editor"
+          id="wat-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="wat"
+        >
+          <div id="wat-editor"></div>
+        </section>
+
+        <div class="output-container">
+          <div class="buttons-container">
+            <button id="execute" class="button run" type="button">
+              Run &rsaquo;
+            </button>
+            <button id="reset" type="button" class="button">Reset</button>
+          </div>
+          <div id="console" class="output"><code></code></div>
+        </div>
+      </section>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-wat.js?v=220ae8b"></script>
+  </body>
+</html>

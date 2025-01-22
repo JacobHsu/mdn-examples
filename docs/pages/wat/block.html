@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Wat Demo: block</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-wat.css?v=220ae8b" rel="stylesheet" />
+  </head>
+  <body>
+    <section id="static">
+        <pre><code id="static-wat" data-height="taller">(module
+  ;; import the browser console object, you'll need to pass this in from JavaScript
+  (import "console" "log" (func $log (param i32)))
+
+  ;; create a function that takes in a number as a param,
+  ;; and logs that number if it's not equal to 100.
+  (func (export "log_if_not_100") (param $num i32)
+    (block $my_block
+
+      ;; $num is equal to 100
+      local.get $num
+      i32.const 100
+      i32.eq
+
+      (if
+        (then
+
+          ;; branch to the end of the block
+          br $my_block
+
+        )
+      )
+
+      ;; not reachable when $num is 100
+      local.get $num
+      call $log
+
+    )
+  )
+)
+</code></pre>
+        <pre><code id="static-js" data-height="taller">const url = '{%wasm-url%}';
+await WebAssembly.instantiateStreaming(fetch(url), { console }).then(
+  (result) => {
+    const log_if_not_100 = result.instance.exports.log_if_not_100;
+
+    log_if_not_100(99);
+    // Expected output: 99
+    log_if_not_100(100);
+    // Should not log anything
+    log_if_not_100(101);
+    // Expected output: 101
+  },
+);
+</code></pre>
+    </section>
+
+    <header class="output-header border-rounded-top">
+      <h4 class="output-heading">Wat Demo: block</h4>
+    </header>
+
+    <section id="tab-container" class="tabs">
+      <div class="tab-list border-sides" id="tablist" role="tablist">
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="js-panel"
+          id="js"
+          tabindex="-1"
+        >
+          JavaScript
+        </button>
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="wat-panel"
+          id="wat"
+          autofocus
+        >
+          WAT
+        </button>
+      </div>
+
+      <section id="live" class="live hidden">
+        <section
+          class="editor hidden"
+          id="js-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="js"
+          aria-hidden="true"
+        >
+          <div id="js-editor"></div>
+        </section>
+        <section
+          class="editor"
+          id="wat-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="wat"
+        >
+          <div id="wat-editor"></div>
+        </section>
+
+        <div class="output-container">
+          <div class="buttons-container">
+            <button id="execute" class="button run" type="button">
+              Run &rsaquo;
+            </button>
+            <button id="reset" type="button" class="button">Reset</button>
+          </div>
+          <div id="console" class="output"><code></code></div>
+        </div>
+      </section>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-wat.js?v=220ae8b"></script>
+  </body>
+</html>

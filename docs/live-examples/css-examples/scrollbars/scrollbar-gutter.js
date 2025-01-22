@@ -1,0 +1,1 @@
+window.addEventListener("load",()=>{var e=document.getElementById("control-height");let t=document.getElementById("example-element");e.addEventListener("click",()=>{var e=t.classList;e.contains("heightNormal")?(e.remove("heightNormal"),e.add("heightShort")):(e.remove("heightShort"),e.add("heightNormal"))})});

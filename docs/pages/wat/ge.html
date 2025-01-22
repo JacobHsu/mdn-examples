@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Wat Demo: ge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-wat.css?v=220ae8b" rel="stylesheet" />
+  </head>
+  <body>
+    <section id="static">
+        <pre><code id="static-wat" data-height="taller">(module
+  (import "env" "log_bool" (func $log_bool (param i32)))
+  (func $main
+    ;; load `10` and `2` onto the stack
+    i32.const 10
+    i32.const 2
+
+    i32.ge_u ;; check if `10` is greater than or equal to '2'
+    call $log_bool ;; log the result
+  )
+  (start $main)
+)</code></pre>
+        <pre><code id="static-js" data-height="taller">const url = '{%wasm-url%}';
+
+function log_bool(value) {
+  console.log(Boolean(value));
+  // Expected output: true
+}
+
+await WebAssembly.instantiateStreaming(fetch(url), {
+  env: { log_bool },
+});
+</code></pre>
+    </section>
+
+    <header class="output-header border-rounded-top">
+      <h4 class="output-heading">Wat Demo: ge</h4>
+    </header>
+
+    <section id="tab-container" class="tabs">
+      <div class="tab-list border-sides" id="tablist" role="tablist">
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="js-panel"
+          id="js"
+          tabindex="-1"
+        >
+          JavaScript
+        </button>
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="wat-panel"
+          id="wat"
+          autofocus
+        >
+          WAT
+        </button>
+      </div>
+
+      <section id="live" class="live hidden">
+        <section
+          class="editor hidden"
+          id="js-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="js"
+          aria-hidden="true"
+        >
+          <div id="js-editor"></div>
+        </section>
+        <section
+          class="editor"
+          id="wat-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="wat"
+        >
+          <div id="wat-editor"></div>
+        </section>
+
+        <div class="output-container">
+          <div class="buttons-container">
+            <button id="execute" class="button run" type="button">
+              Run &rsaquo;
+            </button>
+            <button id="reset" type="button" class="button">Reset</button>
+          </div>
+          <div id="console" class="output"><code></code></div>
+        </div>
+      </section>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-wat.js?v=220ae8b"></script>
+  </body>
+</html>

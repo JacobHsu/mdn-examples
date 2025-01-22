@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>JavaScript Demo: Standard built-in objects - parseInt()</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-js.css?v=220ae8b" rel="stylesheet" />
+  </head>
+
+  <body>
+    <section id="static"><pre><code id="static-js" data-height="taller">console.log(parseInt('123'));
+// 123 (default base-10)
+console.log(parseInt('123', 10));
+// 123 (explicitly specify base-10)
+console.log(parseInt('   123 '));
+// 123 (whitespace is ignored)
+console.log(parseInt('077'));
+// 77 (leading zeros are ignored)
+console.log(parseInt('1.9'));
+// 1 (decimal part is truncated)
+console.log(parseInt('ff', 16));
+// 255 (lower-case hexadecimal)
+console.log(parseInt('0xFF', 16));
+// 255 (upper-case hexadecimal with "0x" prefix)
+console.log(parseInt('xyz'));
+// NaN (input can't be converted to an integer)
+</code></pre></section>
+
+    <section id="live" class="live hidden">
+      <header class="output-header border-rounded-top-no-bottom">
+        <h4 class="output-heading">JavaScript Demo: Standard built-in objects - parseInt()</h4>
+      </header>
+      <div id="editor" class="editor"></div>
+
+      <div class="output-container">
+        <div class="buttons-container">
+          <button id="execute" class="button run" type="button">
+            Run &rsaquo;
+          </button>
+          <button id="reset" type="button" class="button">Reset</button>
+        </div>
+        <div id="console" class="output"><code></code></div>
+      </div>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-js.js?v=220ae8b"></script>
+  </body>
+</html>

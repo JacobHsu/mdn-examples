@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Wat Demo: load</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-wat.css?v=220ae8b" rel="stylesheet" />
+  </head>
+  <body>
+    <section id="static">
+        <pre><code id="static-wat" data-height="taller">(module
+
+  (memory $memory 1)
+  (export "memory" (memory $memory))
+
+  (func (export "load_first_item_in_mem") (param $num i32) (result i32)
+    i32.const 0
+
+    ;; load first item in memory and return the result
+    i32.load
+  )
+
+)
+</code></pre>
+        <pre><code id="static-js" data-height="taller">const url = '{%wasm-url%}';
+const result = await WebAssembly.instantiateStreaming(fetch(url));
+const load_first_item_in_mem = result.instance.exports.load_first_item_in_mem;
+const memory = result.instance.exports.memory;
+
+const dataView = new DataView(memory.buffer);
+// Store 30 at the beginning of memory
+dataView.setUint32(0, 30, true);
+
+console.log(load_first_item_in_mem(100));
+// Expected output: 30
+</code></pre>
+    </section>
+
+    <header class="output-header border-rounded-top">
+      <h4 class="output-heading">Wat Demo: load</h4>
+    </header>
+
+    <section id="tab-container" class="tabs">
+      <div class="tab-list border-sides" id="tablist" role="tablist">
+        <button
+          role="tab"
+          aria-selected="false"
+          aria-controls="js-panel"
+          id="js"
+          tabindex="-1"
+        >
+          JavaScript
+        </button>
+        <button
+          role="tab"
+          aria-selected="true"
+          aria-controls="wat-panel"
+          id="wat"
+          autofocus
+        >
+          WAT
+        </button>
+      </div>
+
+      <section id="live" class="live hidden">
+        <section
+          class="editor hidden"
+          id="js-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="js"
+          aria-hidden="true"
+        >
+          <div id="js-editor"></div>
+        </section>
+        <section
+          class="editor"
+          id="wat-panel"
+          tabindex="0"
+          role="tabpanel"
+          aria-labelledby="wat"
+        >
+          <div id="wat-editor"></div>
+        </section>
+
+        <div class="output-container">
+          <div class="buttons-container">
+            <button id="execute" class="button run" type="button">
+              Run &rsaquo;
+            </button>
+            <button id="reset" type="button" class="button">Reset</button>
+          </div>
+          <div id="console" class="output"><code></code></div>
+        </div>
+      </section>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-wat.js?v=220ae8b"></script>
+  </body>
+</html>

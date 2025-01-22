@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>JavaScript Demo: Statement - Async For In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-js.css?v=220ae8b" rel="stylesheet" />
+  </head>
+
+  <body>
+    <section id="static"><pre><code id="static-js" data-height="taller">async function getFromList() {
+  const url =
+    'https://www.random.org/decimal-fractions/?num=1&dec=10&col=1&format=plain&rnd=new';
+
+  const arrayOfFetches = [doFetch(url), doFetch(url), doFetch(url)];
+
+  console.log('Regular iterator: promise objects are expected.');
+  for (const item of arrayOfFetches) {
+    console.log(item);
+  }
+
+  console.log('Async iterator: values from resolved promises are expected.');
+  for await (const item of arrayOfFetches) {
+    console.log(item);
+  }
+}
+
+async function doFetch(url) {
+  const response = await fetch(url);
+  const text = await response.text();
+  return Number(text);
+}
+
+getFromList();
+</code></pre></section>
+
+    <section id="live" class="live hidden">
+      <header class="output-header border-rounded-top-no-bottom">
+        <h4 class="output-heading">JavaScript Demo: Statement - Async For In</h4>
+      </header>
+      <div id="editor" class="editor"></div>
+
+      <div class="output-container">
+        <div class="buttons-container">
+          <button id="execute" class="button run" type="button">
+            Run &rsaquo;
+          </button>
+          <button id="reset" type="button" class="button">Reset</button>
+        </div>
+        <div id="console" class="output"><code></code></div>
+      </div>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-js.js?v=220ae8b"></script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>JavaScript Demo: WeakRef</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../css/codemirror.css?v=220ae8b" rel="stylesheet" />
+    <link href="../../css/editor-js.css?v=220ae8b" rel="stylesheet" />
+  </head>
+
+  <body>
+    <section id="static"><pre><code id="static-js" data-height="taller">const ref = new WeakRef(['foo', 'bar']);
+
+console.log(ref.deref()[0]);
+// Expected output: "foo"
+
+console.log("Triggering garbage collection. Don't do this in production code!");
+console.log('This process is unpredictable and may take few minutes');
+
+function checkIfCollected() {
+  Array.from({ length: 50000 }, () => () => {});
+
+  if (!ref.deref()) {
+    console.log('Object was garbage collected');
+    return;
+  }
+  setTimeout(checkIfCollected, 2);
+}
+checkIfCollected();
+</code></pre></section>
+
+    <section id="live" class="live hidden">
+      <header class="output-header border-rounded-top-no-bottom">
+        <h4 class="output-heading">JavaScript Demo: WeakRef</h4>
+      </header>
+      <div id="editor" class="editor"></div>
+
+      <div class="output-container">
+        <div class="buttons-container">
+          <button id="execute" class="button run" type="button">
+            Run &rsaquo;
+          </button>
+          <button id="reset" type="button" class="button">Reset</button>
+        </div>
+        <div id="console" class="output"><code></code></div>
+      </div>
+    </section>
+
+    <script src="../../js/codemirror.js?v=220ae8b"></script>
+    <script src="../../js/editor-js.js?v=220ae8b"></script>
+  </body>
+</html>
