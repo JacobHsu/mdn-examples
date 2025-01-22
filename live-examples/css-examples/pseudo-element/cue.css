@@ -1,0 +1,12 @@
+video {
+  width: 100%;
+}
+
+video::cue {
+  font-size: 1rem;
+  color: yellow;
+}
+
+::cue(u) {
+  color: red;
+}
